@@ -1,10 +1,10 @@
 import { PieceProps } from "../../common/types";
-import { Bishop } from "../Bishop";
-import { King } from "../King";
-import { Knight } from "../Knight";
-import { Luke } from "../Luke";
-import { Pawn } from "../Pawn";
-import { Queen } from "../Queen";
+import { Bishop } from "./Bishop";
+import { King } from "./King";
+import { Knight } from "./Knight";
+import { Luke } from "./Luke";
+import { Pawn } from "./Pawn";
+import { Queen } from "./Queen";
 
 export const Piece = ({ name, place }:PieceProps) => {
   const renderPiece = () => {
