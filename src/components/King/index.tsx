@@ -4,17 +4,18 @@ import { Place } from "../../common/types"
 import { caluculatePositionFromPlace } from "../../common/utils"
 
 // NOTE: 3dモデルを別で作って読み込む想定だが、現状は色の違いのみでコマを表現する
-const PAWN_COLOR = 'red'
+const KING_COLOR = 'gold'
 
-export const Pawn = ({ place }:{ place: Place }) => {
+export const King = ({ place }:{ place: Place }) => {
   const position = caluculatePositionFromPlace(place)
 
   return (
     <Suspense fallback={null}>
       <mesh position={position}>
         <boxGeometry args={TEMP_PIECE_SIZE} />
-        <meshStandardMaterial color={PAWN_COLOR} />
+        <meshStandardMaterial color={KING_COLOR} />
       </mesh>
     </Suspense>
   )
 }
+
