@@ -1,21 +1,16 @@
+import { HORIZONTAL_SQUARE_COUNT, SIDE_LENGTH_OF_SQUARE, VIRTICAL_SQUARE_COUNT } from "../../common/constants";
 import { XyzSpace } from "../../common/types";
 import { Square } from "../Square";
-
-
-const BOARD_WIDTH = 8
-const BOARD_HEIGHT = 8
-const COLUMN_SPACE = 1
-const ROW_SPACE = 1
 
 export const ChessBoard = () => {
   const squares = []
 
-  for (let column = 1; column <= BOARD_HEIGHT; column++) {
-    for (let row = 1; row <= BOARD_WIDTH; row++) {
-      const squareIndex = (BOARD_HEIGHT * (row - 1) + column)
+  for (let column = 1; column <= VIRTICAL_SQUARE_COUNT; column++) {
+    for (let row = 1; row <= HORIZONTAL_SQUARE_COUNT; row++) {
+      const squareIndex = (VIRTICAL_SQUARE_COUNT * (row - 1) + column)
       const squarePosition:XyzSpace = [
-        column * COLUMN_SPACE - (BOARD_HEIGHT + COLUMN_SPACE)/2,
-        row * ROW_SPACE - (BOARD_WIDTH + ROW_SPACE) / 2,
+        column * SIDE_LENGTH_OF_SQUARE - (VIRTICAL_SQUARE_COUNT + SIDE_LENGTH_OF_SQUARE)/2,
+        row * SIDE_LENGTH_OF_SQUARE - (HORIZONTAL_SQUARE_COUNT + SIDE_LENGTH_OF_SQUARE) / 2,
         0
       ]
       const isBlack = (column + row) % 2 !== 0

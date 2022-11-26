@@ -1,10 +1,10 @@
 import { Canvas } from '@react-three/fiber';
-import { ChessBoard } from './components/ChessBoard';
 import { XyzSpace } from './common/types';
+import { ChessField } from './components/ChessField';
 
 const CAMERA_PROPS = {
   fov: 60,
-  position: [0, 0, 10] as XyzSpace
+  position: [0, -5, 7] as XyzSpace
 }
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
     <Canvas camera={CAMERA_PROPS}>
       <axesHelper scale={25} />
       <ambientLight />
-      <ChessBoard />
+      <ChessField />
     </Canvas>
   );
 }
