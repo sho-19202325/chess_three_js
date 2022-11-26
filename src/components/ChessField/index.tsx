@@ -1,32 +1,33 @@
 import { PieceProps } from "../../common/types"
-import { Bishop } from "../Bishop"
 import { ChessBoard } from "../ChessBoard"
-import { King } from "../King"
-import { Knight } from "../Knight"
-import { Luke } from "../Luke"
-import { Pawn } from "../Pawn"
-import { Queen } from "../Queen"
+import { Piece } from "../Piece"
+
+const INITIAL_PICES:PieceProps[] = [
+  { name: "Pawn", place: [1, 2] },
+  { name: "Pawn", place: [2, 2] },
+  { name: "Pawn", place: [3, 2] },
+  { name: "Pawn", place: [4, 2] },
+  { name: "Pawn", place: [5, 2] },
+  { name: "Pawn", place: [6, 2] },
+  { name: "Pawn", place: [7, 2] },
+  { name: "Pawn", place: [8, 2] },
+  { name: "Luke", place: [1, 1]},
+  { name: "Luke", place: [8, 1]},
+  { name: "Knight", place: [2, 1]},
+  { name: "Knight", place: [7, 1]},
+  { name: "Bishop", place: [3, 1]},
+  { name: "Bishop", place: [6, 1]},
+  { name: "Queen", place: [4, 1]},
+  { name: "King", place: [5, 1]}
+]
 
 export const ChessField = () => {
   return (
     <>
       <ChessBoard />
-      <Pawn place={[1, 2]} />
-      <Pawn place={[2, 2]} />
-      <Pawn place={[3, 2]} />
-      <Pawn place={[4, 2]} />
-      <Pawn place={[5, 2]} />
-      <Pawn place={[6, 2]} />
-      <Pawn place={[7, 2]} />
-      <Pawn place={[8, 2]} />
-      <Luke place={[1, 1]} />
-      <Luke place={[8, 1]} />
-      <Bishop place={[2, 1]} />
-      <Bishop place={[7, 1]} />
-      <Knight place={[3, 1]} />
-      <Knight place={[6, 1]} />
-      <Queen place={[4, 1]} />
-      <King place={[5, 1]} />
+      {INITIAL_PICES.map((item, index) => {
+        return <Piece key={index} name={item.name} place={item.place} />
+      })}
     </>
   )
 }
