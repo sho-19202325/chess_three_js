@@ -1,4 +1,7 @@
-import { PieceProps } from "../../common/types";
+import { ThreeEvent } from "@react-three/fiber";
+import { calculatePositionFromPlace } from "common/utils";
+import { Suspense } from "react";
+import { PieceInfo } from "../../common/types";
 import { Bishop } from "./Bishop";
 import { King } from "./King";
 import { Knight } from "./Knight";
@@ -6,23 +9,40 @@ import { Luke } from "./Luke";
 import { Pawn } from "./Pawn";
 import { Queen } from "./Queen";
 
-export const Piece = ({ name, place }:PieceProps) => {
+type PieceProps = PieceInfo & {
+  handleSelectPiece: (piece: PieceInfo) => void
+}
+
+export const Piece = ({ name, place, handleSelectPiece }:PieceProps) => {
+  const position = calculatePositionFromPlace(place)
+  const handleClickPiece = (e: ThreeEvent<PointerEvent>) => {
+    e.stopPropagation()
+    const piece:PieceInfo = { name, place }
+    handleSelectPiece(piece)
+  }
+
   const renderPiece = () => {
     switch (name) {
       case "Pawn":
-        return <Pawn place={place} />
+        return <Pawn />
       case "Luke":
-        return <Luke place={place} />
+        return <Luke />
       case "Knight":
-        return <Knight place={place} />
+        return <Knight />
       case "Bishop":
-        return <Bishop place={place} />
+        return <Bishop />
       case "Queen":
-        return <Queen place={place} />
+        return <Queen />
       default:
-        return <King place={place} />
+        return <King />
     }
   }
 
-  return <>{renderPiece()}</>
+  return (
+    <Suspense fallback={null}>
+      <mesh position={position} onPointerDown={(e) => handleClickPiece(e)} >
+        { renderPiece() }
+      </mesh>
+    </Suspense>
+  )
 }

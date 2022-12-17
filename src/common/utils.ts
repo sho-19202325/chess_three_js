@@ -1,7 +1,7 @@
 import { HORIZONTAL_SQUARE_COUNT, SIDE_LENGTH_OF_SQUARE, VIRTICAL_SQUARE_COUNT } from "./constants"
 import { Place, XyzSpace } from "./types"
 
-const caluculatePositionFromPlace = (place: Place) => {
+const calculatePositionFromPlace = (place: Place) => {
   // 中心から何マス離れているかの計算
   const diffHorizontalSquareCountFromCenter = place[0] - (HORIZONTAL_SQUARE_COUNT + 1) / 2
   const diffVirticalSquareCountFromCenter = place[1] - (VIRTICAL_SQUARE_COUNT + 1) / 2
@@ -13,5 +13,5 @@ const caluculatePositionFromPlace = (place: Place) => {
 }
 
 export {
-  caluculatePositionFromPlace
+  calculatePositionFromPlace
 }

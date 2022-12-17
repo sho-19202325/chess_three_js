@@ -1,8 +1,8 @@
-import { PieceProps } from "common/types"
+import { PieceInfo } from "common/types"
 import { Piece } from "components/Piece"
 import { useState } from "react"
 
-const INITIAL_PICES_FOR_PLEYER_1:PieceProps[] = [
+const INITIAL_PICES_FOR_PLEYER_1:PieceInfo[] = [
   { name: "Pawn", place: [1, 2] },
   { name: "Pawn", place: [2, 2] },
   { name: "Pawn", place: [3, 2] },
@@ -21,7 +21,7 @@ const INITIAL_PICES_FOR_PLEYER_1:PieceProps[] = [
   { name: "King", place: [5, 1] }
 ]
 
-const INITIAL_PICES_FOR_PLEYER_2:PieceProps[] = [
+const INITIAL_PICES_FOR_PLEYER_2:PieceInfo[] = [
   { name: "Pawn", place: [1, 7] },
   { name: "Pawn", place: [2, 7] },
   { name: "Pawn", place: [3, 7] },
@@ -44,12 +44,23 @@ type PlayerId = 1 | 2
 
 export const PlayerPieces = ({ playerId }: { playerId:PlayerId }) => {
   const initial_pieces = playerId === 1 ? INITIAL_PICES_FOR_PLEYER_1 : INITIAL_PICES_FOR_PLEYER_2
-  const [ownPices, setOwnPices] = useState<PieceProps[]>(initial_pieces)
+  const [ownPieces, setOwnPieces] = useState<PieceInfo[]>(initial_pieces)
+  const [selectedPiece, setSelectedPiece] = useState<PieceInfo | null>(null)
+
+  const handleSelectPiece = (piece: PieceInfo) => {
+    setSelectedPiece(piece)
+    console.log({ piece })
+  }
 
   return (
     <>
-      {ownPices.map((item, index) => {
-        return <Piece key={index} name={item.name} place={item.place} />
+      {ownPieces.map((item, index) => {
+        return <Piece 
+                 key={index}
+                 name={item.name}
+                 place={item.place}
+                 handleSelectPiece={handleSelectPiece}
+               />
       })}
     </>
   )
