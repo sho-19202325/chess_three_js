@@ -1,3 +1,5 @@
+import { calculatePositionFromPlace } from "common/utils";
+import { Suspense } from "react";
 import { PieceProps } from "../../common/types";
 import { Bishop } from "./Bishop";
 import { King } from "./King";
@@ -7,22 +9,30 @@ import { Pawn } from "./Pawn";
 import { Queen } from "./Queen";
 
 export const Piece = ({ name, place }:PieceProps) => {
+  const position = calculatePositionFromPlace(place)
+
   const renderPiece = () => {
     switch (name) {
       case "Pawn":
-        return <Pawn place={place} />
+        return <Pawn />
       case "Luke":
-        return <Luke place={place} />
+        return <Luke />
       case "Knight":
-        return <Knight place={place} />
+        return <Knight />
       case "Bishop":
-        return <Bishop place={place} />
+        return <Bishop />
       case "Queen":
-        return <Queen place={place} />
+        return <Queen />
       default:
-        return <King place={place} />
+        return <King />
     }
   }
 
-  return <>{renderPiece()}</>
+  return (
+    <Suspense fallback={null}>
+      <mesh position={position} >
+        { renderPiece() }
+      </mesh>
+    </Suspense>
+  )
 }
