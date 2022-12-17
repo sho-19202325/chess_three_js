@@ -3,7 +3,7 @@ type XyzSpace = [number, number, number]
 type Place = [number, number]
 
 type PieceName = "Pawn" | "Luke" | "Bishop" | "Knight" | "Queen" | "King"
-type PieceProps = {
+type PieceInfo = {
   name: PieceName,
   place: Place
 }
@@ -11,5 +11,5 @@ type PieceProps = {
 export type {
   XyzSpace,
   Place,
-  PieceProps
+  PieceInfo
 }
