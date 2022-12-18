@@ -1,8 +1,8 @@
-import React from "react"
 import { Canvas } from "@react-three/fiber"
 import { XyzSpace } from "common/types"
 import { ChessBoard } from "components/ChessBoard"
 import { PlayerPieces } from "components/PlayerPieces"
+import FieldContextProvider from "contexts/FieldContext"
 
 const CAMERA_PROPS = {
   fov: 60,
@@ -14,9 +14,11 @@ export const ChessField = () => {
     <Canvas camera={CAMERA_PROPS}>
       <axesHelper scale={25} />
       <ambientLight />
-      <ChessBoard />
-      <PlayerPieces playerId={1} />
-      <PlayerPieces playerId={2} />
+      <FieldContextProvider>
+        <ChessBoard />
+        <PlayerPieces playerId={1} />
+        <PlayerPieces playerId={2} />
+      </FieldContextProvider>
     </Canvas>
   )
 }
