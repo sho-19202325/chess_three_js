@@ -4,7 +4,7 @@ import { FieldContext } from "contexts/FieldContext"
 import { selectSquare } from "pages/chessField/actions"
 import { Suspense, useContext, useEffect, useRef, useState } from "react"
 import { MeshStandardMaterial, MeshToonMaterial } from "three"
-import { Place } from "../../common/types"
+import { Place } from "../../types"
 
 type SquareProps = Readonly<{
   place: Place

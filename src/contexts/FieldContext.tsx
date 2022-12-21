@@ -1,4 +1,4 @@
-import { FieldAction, FieldState, PieceInfo } from "common/types";
+import { FieldAction, FieldState, PieceInfo } from "types";
 import reducer from "pages/chessField/reducer";
 import { createContext, ReactNode, useReducer } from "react";
 

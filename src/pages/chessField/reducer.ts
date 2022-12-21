@@ -1,4 +1,4 @@
-import { FieldAction, FieldState } from "common/types";
+import { FieldAction, FieldState } from "types";
 
 const reducer = (state: FieldState, action: FieldAction):FieldState => {
   switch (action.type) {

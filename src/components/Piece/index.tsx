@@ -3,7 +3,7 @@ import { calculatePositionFromPlace } from "common/utils";
 import { FieldContext } from "contexts/FieldContext";
 import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { Mesh } from "three";
-import { PieceInfo, XyzSpace } from "common/types";
+import { PieceInfo, XyzSpace } from "types";
 import { SIDE_LENGTH_OF_SQUARE } from "consts/chessBoard";
 import { Bishop } from "./Bishop";
 import { King } from "./King";
