@@ -1,5 +1,5 @@
 import { ThreeEvent, useFrame } from "@react-three/fiber";
-import { calculatePositionFromPlace } from "common/utils";
+import { calculatePositionFromPlace } from "utils/place";
 import { FieldContext } from "contexts/FieldContext";
 import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { Mesh } from "three";

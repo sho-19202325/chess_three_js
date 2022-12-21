@@ -1,4 +1,4 @@
-import { isIncludeSamePlace } from "common/utils";
+import { isIncludeSamePlace } from "utils/place";
 import { FieldContext } from "contexts/FieldContext";
 import { finishTurn } from "pages/chessField/actions";
 import { useContext, useEffect } from "react";
