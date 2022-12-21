@@ -4,7 +4,7 @@ import { FieldContext } from "contexts/FieldContext";
 import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { Mesh } from "three";
 import { PieceInfo, XyzSpace } from "common/types";
-import { SIDE_LENGTH_OF_SQUARE } from "common/constants";
+import { SIDE_LENGTH_OF_SQUARE } from "consts/chessBoard";
 import { Bishop } from "./Bishop";
 import { King } from "./King";
 import { Knight } from "./Knight";
