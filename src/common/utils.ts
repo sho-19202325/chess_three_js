@@ -12,6 +12,25 @@ const calculatePositionFromPlace = (place: Place) => {
   return [positionX, positionY, 0] as XyzSpace
 }
 
+// 配列を直接比較すると常にfalseとなるので、toString()して比較している
+const isSamePlace = (placeA: Place , placeB: Place) => {
+  return placeA.toString() === placeB.toString()
+}
+
+const isIncludeSamePlace = (targetPlace: Place, basePlace: Place[]) => {
+  return basePlace.some(place => isSamePlace(place, targetPlace))
+}
+
+const isValidPlace = (place: Place) => {
+  return place[0] > 0
+         && place[0] < HORIZONTAL_SQUARE_COUNT
+         && place[1] > 0
+         && place[1] < VIRTICAL_SQUARE_COUNT
+}
+
 export {
-  calculatePositionFromPlace
+  calculatePositionFromPlace,
+  isSamePlace,
+  isIncludeSamePlace,
+  isValidPlace
 }
