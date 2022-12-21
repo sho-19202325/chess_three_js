@@ -16,8 +16,8 @@ export const ChessField = () => {
       <ambientLight />
       <FieldContextProvider>
         <ChessBoard />
-        <PlayerPieces playerId={1} />
-        <PlayerPieces playerId={2} />
+        <PlayerPieces player={1} />
+        <PlayerPieces player={2} />
       </FieldContextProvider>
     </Canvas>
   )
