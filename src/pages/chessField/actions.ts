@@ -1,8 +1,20 @@
-import { FieldAction, FieldState, PieceInfo, Place } from "common/types";
+import { FieldAction, FieldState, PieceInfo, Place, PlayerPieces } from "common/types";
+import { AvailablePlaceCalculatorFactory } from "models/AvailablePlaceCalculatorFactory";
 
 const selectPiece = (state: FieldState, selectedPiece: PieceInfo):FieldAction => {
-  // TODO: availablePlaceをstate.playerPiecesとselectedPieceから算出する
-  const availablePlaces:Place[] = []
+  if (state.phase !== "SELECT_PIECE" && state.phase !== "SELECT_SQUARE") throw Error(`Invalid Phase is specified: ${state.phase}, but expected SELECT_PIECE`)
+
+  const ownPlaces = state.playerPieces[state.currentPlayer].map(piece => piece.place)
+  const opponentPlaces = state.playerPieces[state.opponentPlayer].map(piece => piece.place)
+
+  // 移動可能なマスを取得する
+  const availablePlaceCalculator = AvailablePlaceCalculatorFactory.create(
+    selectedPiece,
+    state.currentPlayer,
+    ownPlaces,
+    opponentPlaces
+  )
+  const availablePlaces = availablePlaceCalculator.run()
 
   return {
     type: "SELECT_PIECE",
@@ -16,6 +28,8 @@ const selectPiece = (state: FieldState, selectedPiece: PieceInfo):FieldAction =>
 }
 
 const selectSquare = (state: FieldState, targetPlace: Place):FieldAction => {
+  if (state.phase !== "SELECT_SQUARE") throw Error(`Invalid Phase is specified: ${state.phase}, but expected SELECT_SQUARE`)
+
   return {
     type: "SELECT_SQUARE",
     payload: {
@@ -27,10 +41,30 @@ const selectSquare = (state: FieldState, targetPlace: Place):FieldAction => {
 }
 
 const movePiece = (state: FieldState):FieldAction => {
+  if (state.phase !== "MOVE_PIECE") throw Error(`Invalid Phase is specified: ${state.phase}, but expected MOVE_PIECE`)
   // TODO: selectedPiece, targetPlace, PlayerPiecesからpyalerPiecesを算出する
-  const player1Pieces:PieceInfo[] = []
-  const player2Pieces:PieceInfo[] = []
-  const playerPieces = { player1: player1Pieces, player2: player2Pieces }
+  const ownPieces = state.playerPieces[state.currentPlayer]
+  const newPiece = {
+    name: state.selectedPiece.name,
+    place: state.targetPlace
+  }
+  // 移動させたpieceをアップデートする
+  const selectedPieceIndex = ownPieces.findIndex(piece => JSON.stringify(piece) === JSON.stringify(state.selectedPiece))
+  ownPieces[selectedPieceIndex] = newPiece
+
+  let playerPieces:PlayerPieces = { 1: [], 2: []}
+
+  if (state.currentPlayer === 1) {
+    playerPieces = {
+      1: ownPieces,
+      2: state.playerPieces[state.opponentPlayer]
+    }
+  } else {
+    playerPieces = {
+      1: state.playerPieces[state.opponentPlayer],
+      2: ownPieces
+    }
+  }
 
   return {
     type: "MOVE_PIECE",
@@ -43,13 +77,16 @@ const movePiece = (state: FieldState):FieldAction => {
 }
 
 const finishTurn = (state: FieldState):FieldAction => {
+  if (state.phase !== "FINISH_TURN") throw Error(`Invalid Phase is specified: ${state.phase}, but expected FINISH_TURN`)
+
   const nextPlayer = state.currentPlayer === 1 ? 2 : 1
   return {
     type: "FINISH_TURN",
     payload: {
-      ...state,
-      phase: "SELECT_SQUARE",
+      playerPieces: state.playerPieces,
+      phase: "SELECT_PIECE",
       currentPlayer: nextPlayer,
+      opponentPlayer: state.currentPlayer,
       selectedPiece: null,
       targetPlace: null,
       availablePlaces: null

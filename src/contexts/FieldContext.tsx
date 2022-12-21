@@ -48,11 +48,12 @@ const INITIAL_PICES_FOR_PLEYER_2:PieceInfo[] = [
 const initialState:FieldState = {
   phase: "SELECT_PIECE",
   currentPlayer: 1,
+  opponentPlayer: 2,
   selectedPiece: null,
   targetPlace: null,
   playerPieces: {
-    player1: INITIAL_PICES_FOR_PLEYER_1,
-    player2: INITIAL_PICES_FOR_PLEYER_2
+    1: INITIAL_PICES_FOR_PLEYER_1,
+    2: INITIAL_PICES_FOR_PLEYER_2
   },
   availablePlaces: null
 }
