@@ -62,7 +62,7 @@ export const Piece = ({ piece, handleSelectPiece }:PieceProps) => {
 
       setDefFromTargetPosition(position)
     }
-  }, [state.targetPlace])
+  }, [state, piece])
 
   useFrame(() => {
     if (mesh.current === null

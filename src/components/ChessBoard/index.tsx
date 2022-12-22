@@ -21,7 +21,7 @@ export const ChessBoard = () => {
       // TODO: チェックメイトの確認処理などをここで行う
       dispatch(finishTurn(state))
     }
-  }, [state.phase])
+  }, [state, dispatch])
 
   return (
     <>
