@@ -1,4 +1,4 @@
-import { Place, XyzSpace } from "./types"
+import { Place, XyzSpace } from "types/common"
 
 // NOTE: 3dモデルを読み込むまではサイズを統一している
 const TEMP_PIECE_SIZE = [0.5, 0.5, 2] as XyzSpace

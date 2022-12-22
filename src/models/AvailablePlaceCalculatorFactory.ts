@@ -1,4 +1,4 @@
-import { PieceInfo, Place, Player } from "common/types"
+import { PieceInfo, Place, Player } from "types/common"
 import { AvailablePlaceCalculatorForPawn } from "./AvailablePlaceCalculator/AvailablePlaceCalculatorForPawn"
 
 export class AvailablePlaceCalculatorFactory {

@@ -1,5 +1,5 @@
-import { Place } from "common/types";
-import { isIncludeSamePlace, isValidPlace } from "common/utils";
+import { Place } from "types/common";
+import { isIncludeSamePlace, isValidPlace } from "utils/place";
 import { AvailablePlaceCalculator } from "models/AvailablePlaceCalculator";
 
 export class AvailablePlaceCalculatorForPawn extends AvailablePlaceCalculator {

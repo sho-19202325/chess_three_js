@@ -1,20 +1,9 @@
-type XyzSpace = [number, number, number]
-// TODO: 1~8までのみを許容するように変更する
-type Place = [number, number]
+import { PieceInfo, Place, Player } from "./common"
 
-type PieceName = "Pawn" | "Luke" | "Bishop" | "Knight" | "Queen" | "King"
-type PieceInfo = {
-  name: PieceName,
-  place: Place
-}
-
-type Player = 1 | 2
 type PlayerPieces = {
   1: PieceInfo[]
   2: PieceInfo[]
 }
-
-type Phase = "SELECT_PIECE" | "SELECT_SQUARE" | "MOVE_PIECE" | "FINISH_TURN"
 
 type FieldState = SelectPieceState | SelectSquareState | MoveOrFinishState
 
@@ -71,13 +60,7 @@ type FinishTurnAction = {
 type FieldAction = SelectPieceAction | SelectSquareAction | MoveAction | FinishTurnAction
 
 export type {
-  XyzSpace,
-  Place,
-  PieceName,
-  PieceInfo,
-  Player,
-  PlayerPieces,
-  Phase,
   FieldState,
-  FieldAction
+  FieldAction,
+  PlayerPieces
 }

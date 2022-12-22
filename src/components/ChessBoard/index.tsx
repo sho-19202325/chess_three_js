@@ -1,8 +1,8 @@
-import { isIncludeSamePlace } from "common/utils";
+import { isIncludeSamePlace } from "utils/place";
 import { FieldContext } from "contexts/FieldContext";
 import { finishTurn } from "pages/chessField/actions";
 import { useContext, useEffect } from "react";
-import { ALL_PLACES, VIRTICAL_SQUARE_COUNT } from "../../common/constants";
+import { ALL_PLACES, VIRTICAL_SQUARE_COUNT } from "consts/chessBoard";
 import { Square } from "../Square";
 
 export const ChessBoard = () => {

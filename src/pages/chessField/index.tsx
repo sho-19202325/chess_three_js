@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber"
-import { XyzSpace } from "common/types"
+import { XyzSpace } from "types/common"
 import { ChessBoard } from "components/ChessBoard"
 import { PlayerPieces } from "components/PlayerPieces"
 import FieldContextProvider from "contexts/FieldContext"

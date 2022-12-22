@@ -1,4 +1,5 @@
-import { FieldAction, FieldState, PieceInfo, Place, PlayerPieces } from "common/types";
+import { PieceInfo, Place } from "types/common";
+import { FieldAction, FieldState, PlayerPieces } from "types/fieldState";
 import { AvailablePlaceCalculatorFactory } from "models/AvailablePlaceCalculatorFactory";
 
 const selectPiece = (state: FieldState, selectedPiece: PieceInfo):FieldAction => {
