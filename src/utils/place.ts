@@ -1,5 +1,5 @@
 import { HORIZONTAL_SQUARE_COUNT, SIDE_LENGTH_OF_SQUARE, VIRTICAL_SQUARE_COUNT } from "consts/chessBoard"
-import { Place, XyzSpace } from "../types"
+import { Place, XyzSpace } from "../types/common"
 
 const calculatePositionFromPlace = (place: Place) => {
   // 中心から何マス離れているかの計算

@@ -1,4 +1,4 @@
-import { Place } from "types";
+import { Place } from "types/common";
 import { isIncludeSamePlace, isValidPlace } from "utils/place";
 import { AvailablePlaceCalculator } from "models/AvailablePlaceCalculator";
 
