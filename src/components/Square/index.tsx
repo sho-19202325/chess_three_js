@@ -2,8 +2,8 @@ import { ThreeEvent, useFrame } from "@react-three/fiber"
 import { calculatePositionFromPlace } from "utils/place"
 import { FieldContext } from "contexts/FieldContext"
 import { selectSquare } from "pages/chessField/actions"
-import { Suspense, useContext, useEffect, useRef, useState } from "react"
-import { MeshStandardMaterial, MeshToonMaterial } from "three"
+import { Suspense, useContext, useEffect, useRef } from "react"
+import { MeshStandardMaterial } from "three"
 import { Place } from "../../types/common"
 
 type SquareProps = Readonly<{
