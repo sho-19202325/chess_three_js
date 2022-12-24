@@ -56,7 +56,7 @@ export const Square = ({ place, isBlack, isActive }: SquareProps) => {
     <Suspense fallback={null}>
         <mesh position={position} onPointerDown={(e) => handleClickActiveSqure(e)}>
           <planeGeometry args={SQUARE_SIZE}  />
-          <meshStandardMaterial opacity={0} ref={material} color={squareColor} />
+          <meshStandardMaterial ref={material} color={squareColor} />
         </mesh>
     </Suspense>
   )

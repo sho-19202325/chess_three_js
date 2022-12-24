@@ -4,7 +4,7 @@ import { FieldContext } from "contexts/FieldContext";
 import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { Group } from "three";
 import { PieceInfo, Player, XyzSpace } from "types/common";
-import { MAX_Z_POSITION, SIDE_LENGTH_OF_SQUARE } from "consts/chessBoard";
+import { MAX_Z_POSITION, PIECE_HEIGHT, SIDE_LENGTH_OF_SQUARE } from "consts/chessBoard";
 import { Bishop } from "./Bishop";
 import { King } from "./King";
 import { Knight } from "./Knight";
@@ -25,16 +25,20 @@ const MOVE_PER_FRAME = 0.1
 // 取られた駒が除外される速度
 const REMOVE_PER_FRAME = 1
 
+const PIECE_Z_POSITION = PIECE_HEIGHT / 2
+
 export const Piece = ({ piece, player, handleSelectPiece }:PieceProps) => {
   const group = useRef<Group>(null)
   const position = calculatePositionFromPlace(piece.place)
+  position[2] = PIECE_Z_POSITION
+
   const { state, dispatch } = useContext(FieldContext)
   const [targetPosition, setTargetPosition] = useState<XyzSpace | null>(null)
   const [defFromTargetPosition, setDefFromTargetPosition] = useState<XyzSpace | null>(null)
   // 駒が取られたかどうかを判別するためのstate
   const [isRemoved, setIsRemoved] = useState<boolean>(false)
 
-  const REMOVE_DERECTION = position[1] > 0 ? 1 : -1
+  const REMOVE_DERECTION = player === 1 ? -1 : 1
 
   const handleClickPiece = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation()
