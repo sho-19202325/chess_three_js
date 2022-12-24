@@ -1,13 +1,22 @@
-import { TEMP_PIECE_SIZE } from "consts/chessBoard"
+import { BOX_PIECE_ARGS, CYLINHDER_PIECE_ARGS, CYLINHDER_PIECE_ROTATION } from "consts/chessBoard"
+import { Player } from "types/common"
 
-// NOTE: 3dモデルを別で作って読み込む想定だが、現状は色の違いのみでコマを表現する
 const PAWN_COLOR = 'red'
 
-export const Pawn = () => {
+export const Pawn = ({ player }:{ player: Player }) => {
   return (
     <>
-      <boxGeometry args={TEMP_PIECE_SIZE} />
-      <meshStandardMaterial color={PAWN_COLOR} />
+      { player === 1 ? (
+        <mesh>
+          <boxGeometry args={BOX_PIECE_ARGS} />
+          <meshStandardMaterial color={PAWN_COLOR} />
+        </mesh>
+      ) : (
+        <mesh rotation={CYLINHDER_PIECE_ROTATION}>
+          <cylinderGeometry args={CYLINHDER_PIECE_ARGS} />
+          <meshStandardMaterial color={PAWN_COLOR} />
+        </mesh>
+      ) }
     </>
   )
 }

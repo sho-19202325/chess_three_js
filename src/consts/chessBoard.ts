@@ -1,8 +1,9 @@
 import { Place, XyzSpace } from "types/common"
 
 const MAX_Z_POSITION = 10
-// NOTE: 3dモデルを読み込むまではサイズを統一している
-const TEMP_PIECE_SIZE = [0.5, 0.5, 2] as XyzSpace
+const BOX_PIECE_ARGS = [0.5, 0.5, 2] as XyzSpace
+const CYLINHDER_PIECE_ARGS = [0.3, 0.3, 2, 32] as [number, number, number, number]
+const CYLINHDER_PIECE_ROTATION = [Math.PI / 2, 0, 0] as XyzSpace
 
 const VIRTICAL_SQUARE_COUNT = 8
 const HORIZONTAL_SQUARE_COUNT = 8
@@ -24,7 +25,9 @@ const ALL_PLACES = getAllPlaces()
 
 export {
   MAX_Z_POSITION,
-  TEMP_PIECE_SIZE,
+  BOX_PIECE_ARGS,
+  CYLINHDER_PIECE_ARGS,
+  CYLINHDER_PIECE_ROTATION,
   VIRTICAL_SQUARE_COUNT,
   HORIZONTAL_SQUARE_COUNT,
   SIDE_LENGTH_OF_SQUARE,
