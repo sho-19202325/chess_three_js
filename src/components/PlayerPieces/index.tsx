@@ -23,6 +23,7 @@ export const PlayerPieces = ({ player }: { player: Player }) => {
         return <Piece 
                  key={index}
                  piece={item}
+                 player={player}
                  handleSelectPiece={handleSelectPiece}
                />
       })}

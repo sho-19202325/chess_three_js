@@ -2,9 +2,9 @@ import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { calculatePositionFromPlace, isSamePlace } from "utils/place";
 import { FieldContext } from "contexts/FieldContext";
 import { Suspense, useContext, useEffect, useRef, useState } from "react";
-import { Mesh } from "three";
-import { PieceInfo, XyzSpace } from "types/common";
-import { MAX_Z_POSITION, SIDE_LENGTH_OF_SQUARE } from "consts/chessBoard";
+import { Group } from "three";
+import { PieceInfo, Player, XyzSpace } from "types/common";
+import { MAX_Z_POSITION, PIECE_HEIGHT, SIDE_LENGTH_OF_SQUARE } from "consts/chessBoard";
 import { Bishop } from "./Bishop";
 import { King } from "./King";
 import { Knight } from "./Knight";
@@ -15,6 +15,7 @@ import { movePiece } from "pages/chessField/actions";
 
 type PieceProps = {
   piece: PieceInfo
+  player: Player
   handleSelectPiece: (piece: PieceInfo) => void
 }
 
@@ -24,16 +25,20 @@ const MOVE_PER_FRAME = 0.1
 // 取られた駒が除外される速度
 const REMOVE_PER_FRAME = 1
 
-export const Piece = ({ piece, handleSelectPiece }:PieceProps) => {
-  const mesh = useRef<Mesh>(null)
+const PIECE_Z_POSITION = PIECE_HEIGHT / 2
+
+export const Piece = ({ piece, player, handleSelectPiece }:PieceProps) => {
+  const group = useRef<Group>(null)
   const position = calculatePositionFromPlace(piece.place)
+  position[2] = PIECE_Z_POSITION
+
   const { state, dispatch } = useContext(FieldContext)
   const [targetPosition, setTargetPosition] = useState<XyzSpace | null>(null)
   const [defFromTargetPosition, setDefFromTargetPosition] = useState<XyzSpace | null>(null)
   // 駒が取られたかどうかを判別するためのstate
   const [isRemoved, setIsRemoved] = useState<boolean>(false)
 
-  const REMOVE_DERECTION = position[1] > 0 ? 1 : -1
+  const REMOVE_DERECTION = player === 1 ? -1 : 1
 
   const handleClickPiece = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation()
@@ -43,17 +48,17 @@ export const Piece = ({ piece, handleSelectPiece }:PieceProps) => {
   const renderPiece = () => {
     switch (piece.name) {
       case "Pawn":
-        return <Pawn />
+        return <Pawn player={player} />
       case "Luke":
-        return <Luke />
+        return <Luke player={player} />
       case "Knight":
-        return <Knight />
+        return <Knight player={player} />
       case "Bishop":
-        return <Bishop />
+        return <Bishop player={player} />
       case "Queen":
-        return <Queen />
+        return <Queen player={player} />
       default:
-        return <King />
+        return <King player={player} />
     }
   }
 
@@ -79,22 +84,22 @@ export const Piece = ({ piece, handleSelectPiece }:PieceProps) => {
     }
   }, [state, piece])
 
-  const moveSelectedPiece = (mesh: Mesh) => {
+  const moveSelectedPiece = (group: Group) => {
     if (targetPosition === null || defFromTargetPosition === null || state.phase !== "MOVE_PIECE") return
 
-    if (mesh.position.x !== targetPosition[0]) {
+    if (group.position.x !== targetPosition[0]) {
       const deltaX = defFromTargetPosition[0] > 0 ? MOVE_PER_FRAME : -MOVE_PER_FRAME
-      mesh.position.x = Math.round((mesh.position.x + deltaX) * 100) / 100
+      group.position.x = Math.round((group.position.x + deltaX) * 100) / 100
     }
 
-    if (mesh.position.y !== targetPosition[1]) {
+    if (group.position.y !== targetPosition[1]) {
       const deltaY = defFromTargetPosition[1] > 0 ? MOVE_PER_FRAME : -MOVE_PER_FRAME
-      mesh.position.y = Math.round((mesh.position.y + deltaY) * 100) / 100
+      group.position.y = Math.round((group.position.y + deltaY) * 100) / 100
     }
 
     // 目的のpositionまで到達した時に、各stateをnullに戻し、movePieceアクションをdispathする。
-    if (mesh.position.x === targetPosition[0]
-      && mesh.position.y === targetPosition[1]
+    if (group.position.x === targetPosition[0]
+      && group.position.y === targetPosition[1]
     ) {
       setTargetPosition(null)
       setDefFromTargetPosition(null)
@@ -102,11 +107,11 @@ export const Piece = ({ piece, handleSelectPiece }:PieceProps) => {
     }
   }
 
-  const moveLostPiece = (mesh: Mesh) => {
+  const moveLostPiece = (group: Group) => {
     if (isRemoved) {
-      if (mesh.position.z < MAX_Z_POSITION) {
-        mesh.position.z += REMOVE_PER_FRAME
-        mesh.position.y += REMOVE_PER_FRAME * REMOVE_DERECTION
+      if (group.position.z < MAX_Z_POSITION) {
+        group.position.z += REMOVE_PER_FRAME
+        group.position.y += REMOVE_PER_FRAME * REMOVE_DERECTION
       } else {
         setIsRemoved(false)
       }
@@ -114,17 +119,17 @@ export const Piece = ({ piece, handleSelectPiece }:PieceProps) => {
   }
 
   useFrame(() => {
-    if (mesh.current === null) return
+    if (group.current === null) return
 
-    moveSelectedPiece(mesh.current)
-    moveLostPiece(mesh.current)
+    moveSelectedPiece(group.current)
+    moveLostPiece(group.current)
   })
 
   return (
     <Suspense fallback={null}>
-      <mesh ref={mesh} position={position} onPointerDown={(e) => handleClickPiece(e)} >
+      <group ref={group} position={position} onPointerDown={(e) => handleClickPiece(e)} >
         { renderPiece() }
-      </mesh>
+      </group>
     </Suspense>
   )
 }
