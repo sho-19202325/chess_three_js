@@ -43,7 +43,6 @@ const selectSquare = (state: FieldState, targetPlace: Place):FieldAction => {
 
 const movePiece = (state: FieldState):FieldAction => {
   if (state.phase !== "MOVE_PIECE") throw Error(`Invalid Phase is specified: ${state.phase}, but expected MOVE_PIECE`)
-  // TODO: selectedPiece, targetPlace, PlayerPiecesからpyalerPiecesを算出する
   const ownPieces = state.playerPieces[state.currentPlayer]
   const newPiece = {
     name: state.selectedPiece.name,

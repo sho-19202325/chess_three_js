@@ -3,7 +3,7 @@ import { calculatePositionFromPlace, isSamePlace } from "utils/place";
 import { FieldContext } from "contexts/FieldContext";
 import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { Mesh } from "three";
-import { PieceInfo, Place, XyzSpace } from "types/common";
+import { PieceInfo, XyzSpace } from "types/common";
 import { MAX_Z_POSITION, SIDE_LENGTH_OF_SQUARE } from "consts/chessBoard";
 import { Bishop } from "./Bishop";
 import { King } from "./King";
