@@ -1,5 +1,6 @@
 import { Place, XyzSpace } from "types/common"
 
+const MAX_Z_POSITION = 10
 // NOTE: 3dモデルを読み込むまではサイズを統一している
 const TEMP_PIECE_SIZE = [0.5, 0.5, 2] as XyzSpace
 
@@ -22,6 +23,7 @@ const getAllPlaces = ():Place[] => {
 const ALL_PLACES = getAllPlaces()
 
 export {
+  MAX_Z_POSITION,
   TEMP_PIECE_SIZE,
   VIRTICAL_SQUARE_COUNT,
   HORIZONTAL_SQUARE_COUNT,
