@@ -72,9 +72,9 @@ export const Piece = ({ piece, handleSelectPiece }:PieceProps) => {
         const distanceFromY = state.targetPlace[1] - piece.place[1]
         const position:XyzSpace = [distanceFromX * SIDE_LENGTH_OF_SQUARE, distanceFromY * SIDE_LENGTH_OF_SQUARE, 0]
         setDefFromTargetPosition(position)
-      } else if (isSamePlace(state.targetPlace, piece.place)) {
+      } else if (isSamePlace(state.targetPlace, piece.place) && state.phase === "MOVE_PIECE") {
         // 移動先のplaceにコマがあったら、駒を削除する
-        if (state.phase === "MOVE_PIECE") setIsRemoved(true)
+        setIsRemoved(true)
       }
     }
   }, [state, piece])
