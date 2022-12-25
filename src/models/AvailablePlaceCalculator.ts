@@ -80,4 +80,84 @@ export abstract class AvailablePlaceCalculator {
 
     return availablePlaces
   }
+
+  protected findAvailablePlaceInRightFront = (fromPlace: Place) => {
+    const availablePlaces:Place[] = []
+
+    for (let distance = 1;; distance++) {
+      const placeX = fromPlace[0] + distance
+      const placeY = fromPlace[1] + distance
+      if (placeX > HORIZONTAL_SQUARE_COUNT || placeY > VIRTICAL_SQUARE_COUNT) break
+
+      const targetPlace:Place = [placeX, placeY]
+
+      if (isIncludeSamePlace(targetPlace, this.ownPlaces)) return availablePlaces
+
+      availablePlaces.push(targetPlace)
+
+      if (isIncludeSamePlace(targetPlace, this.opponentPlaces)) return availablePlaces
+    }
+
+    return availablePlaces
+  }
+
+  protected findAvailablePlaceInLeftFront = (fromPlace: Place) => {
+    const availablePlaces:Place[] = []
+
+    for (let distance = 1;; distance++) {
+      const placeX = fromPlace[0] - distance
+      const placeY = fromPlace[1] + distance
+      if (placeX < 0 || placeY > VIRTICAL_SQUARE_COUNT) break
+
+      const targetPlace:Place = [placeX, placeY]
+
+      if (isIncludeSamePlace(targetPlace, this.ownPlaces)) return availablePlaces
+
+      availablePlaces.push(targetPlace)
+
+      if (isIncludeSamePlace(targetPlace, this.opponentPlaces)) return availablePlaces
+    }
+
+    return availablePlaces
+  }
+
+  protected findAvailablePlaceInRightBack = (fromPlace: Place) => {
+    const availablePlaces:Place[] = []
+
+    for (let distance = 1;; distance++) {
+      const placeX = fromPlace[0] + distance
+      const placeY = fromPlace[1] - distance
+      if (placeX > HORIZONTAL_SQUARE_COUNT || placeY < 0) break
+
+      const targetPlace:Place = [placeX, placeY]
+
+      if (isIncludeSamePlace(targetPlace, this.ownPlaces)) return availablePlaces
+
+      availablePlaces.push(targetPlace)
+
+      if (isIncludeSamePlace(targetPlace, this.opponentPlaces)) return availablePlaces
+    }
+
+    return availablePlaces
+  }
+
+  protected findAvailablePlaceInLeftBack = (fromPlace: Place) => {
+    const availablePlaces:Place[] = []
+
+    for (let distance = 1;; distance++) {
+      const placeX = fromPlace[0] - distance
+      const placeY = fromPlace[1] - distance
+      if (placeX < 0 || placeY < 0) break
+
+      const targetPlace:Place = [placeX, placeY]
+
+      if (isIncludeSamePlace(targetPlace, this.ownPlaces)) return availablePlaces
+
+      availablePlaces.push(targetPlace)
+
+      if (isIncludeSamePlace(targetPlace, this.opponentPlaces)) return availablePlaces
+    }
+
+    return availablePlaces
+  }
 }
