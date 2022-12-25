@@ -1,10 +1,10 @@
 import { ThreeEvent, useFrame } from "@react-three/fiber";
-import { calculatePositionFromPlace, isSamePlace } from "utils/place";
+import { calculatePositionFromPlace } from "utils/place";
 import { FieldContext } from "contexts/FieldContext";
 import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { Group } from "three";
 import { PieceInfo, Player, XyzSpace } from "types/common";
-import { MAX_Z_POSITION, PIECE_HEIGHT, SIDE_LENGTH_OF_SQUARE } from "consts/chessBoard";
+import { PIECE_HEIGHT, SIDE_LENGTH_OF_SQUARE } from "consts/chessBoard";
 import { Bishop } from "./Bishop";
 import { King } from "./King";
 import { Knight } from "./Knight";
@@ -22,9 +22,6 @@ type PieceProps = {
 // 駒を移動させる速度
 const MOVE_PER_FRAME = 0.1
 
-// 取られた駒が除外される速度
-const REMOVE_PER_FRAME = 1
-
 const PIECE_Z_POSITION = PIECE_HEIGHT / 2
 
 export const Piece = ({ piece, player, handleSelectPiece }:PieceProps) => {
@@ -35,10 +32,6 @@ export const Piece = ({ piece, player, handleSelectPiece }:PieceProps) => {
   const { state, dispatch } = useContext(FieldContext)
   const [targetPosition, setTargetPosition] = useState<XyzSpace | null>(null)
   const [defFromTargetPosition, setDefFromTargetPosition] = useState<XyzSpace | null>(null)
-  // 駒が取られたかどうかを判別するためのstate
-  const [isRemoved, setIsRemoved] = useState<boolean>(false)
-
-  const REMOVE_DERECTION = player === 1 ? -1 : 1
 
   const handleClickPiece = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation()
@@ -66,21 +59,16 @@ export const Piece = ({ piece, player, handleSelectPiece }:PieceProps) => {
     if (state.targetPlace === null) {
       setTargetPosition(null)
       setDefFromTargetPosition(null)
-    } else {
-      if (state.selectedPiece === piece) {
-        // 移動先のplaceから、positionを算出
-        const targetPosition = calculatePositionFromPlace(state.targetPlace)
-        setTargetPosition(targetPosition)
+    } else if (state.selectedPiece === piece) {
+      // 移動先のplaceから、positionを算出
+      const targetPosition = calculatePositionFromPlace(state.targetPlace)
+      setTargetPosition(targetPosition)
 
-        // 移動先のpositionと動かすコマの距離を算出
-        const distanceFromX = state.targetPlace[0] - piece.place[0]
-        const distanceFromY = state.targetPlace[1] - piece.place[1]
-        const position:XyzSpace = [distanceFromX * SIDE_LENGTH_OF_SQUARE, distanceFromY * SIDE_LENGTH_OF_SQUARE, 0]
-        setDefFromTargetPosition(position)
-      } else if (isSamePlace(state.targetPlace, piece.place) && state.phase === "MOVE_PIECE") {
-        // 移動先のplaceにコマがあったら、駒を削除する
-        setIsRemoved(true)
-      }
+      // 移動先のpositionと動かすコマの距離を算出
+      const distanceFromX = state.targetPlace[0] - piece.place[0]
+      const distanceFromY = state.targetPlace[1] - piece.place[1]
+      const position:XyzSpace = [distanceFromX * SIDE_LENGTH_OF_SQUARE, distanceFromY * SIDE_LENGTH_OF_SQUARE, 0]
+      setDefFromTargetPosition(position)
     }
   }, [state, piece])
 
@@ -107,22 +95,10 @@ export const Piece = ({ piece, player, handleSelectPiece }:PieceProps) => {
     }
   }
 
-  const moveLostPiece = (group: Group) => {
-    if (isRemoved) {
-      if (group.position.z < MAX_Z_POSITION) {
-        group.position.z += REMOVE_PER_FRAME
-        group.position.y += REMOVE_PER_FRAME * REMOVE_DERECTION
-      } else {
-        setIsRemoved(false)
-      }
-    }
-  }
-
   useFrame(() => {
     if (group.current === null) return
 
     moveSelectedPiece(group.current)
-    moveLostPiece(group.current)
   })
 
   return (
