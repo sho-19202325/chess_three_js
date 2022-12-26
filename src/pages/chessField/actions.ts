@@ -1,6 +1,7 @@
-import { PieceInfo, Place } from "types/common";
+import { PieceInfo, Place, Player } from "types/common";
 import { FieldAction, FieldState, PlayerPieces } from "types/fieldState";
 import { AvailablePlaceCalculatorFactory } from "models/AvailablePlaceCalculatorFactory";
+import { isSamePlace } from "utils/place";
 
 const selectPiece = (state: FieldState, selectedPiece: PieceInfo):FieldAction => {
   if (state.phase !== "SELECT_PIECE" && state.phase !== "SELECT_SQUARE") throw Error(`Invalid Phase is specified: ${state.phase}, but expected SELECT_PIECE`)
@@ -31,40 +32,44 @@ const selectPiece = (state: FieldState, selectedPiece: PieceInfo):FieldAction =>
 const selectSquare = (state: FieldState, targetPlace: Place):FieldAction => {
   if (state.phase !== "SELECT_SQUARE") throw Error(`Invalid Phase is specified: ${state.phase}, but expected SELECT_SQUARE`)
 
+  // とった駒を削除する
+  let opponentPieces = state.playerPieces[state.opponentPlayer] 
+  opponentPieces = opponentPieces.filter(piece => !isSamePlace(targetPlace, piece.place))
+
+  const playerPieces = buildPlayerPieces(
+    state.currentPlayer,
+    state.playerPieces[state.currentPlayer],
+    opponentPieces
+  )
+
   return {
     type: "SELECT_SQUARE",
     payload: {
       ...state,
       phase: "MOVE_PIECE",
-      targetPlace
+      targetPlace,
+      playerPieces
     }
   }
 }
 
 const movePiece = (state: FieldState):FieldAction => {
   if (state.phase !== "MOVE_PIECE") throw Error(`Invalid Phase is specified: ${state.phase}, but expected MOVE_PIECE`)
+
+  // 移動させたpieceをアップデートする
   const ownPieces = state.playerPieces[state.currentPlayer]
   const newPiece = {
     name: state.selectedPiece.name,
     place: state.targetPlace
   }
-  // 移動させたpieceをアップデートする
   const selectedPieceIndex = ownPieces.findIndex(piece => JSON.stringify(piece) === JSON.stringify(state.selectedPiece))
   ownPieces[selectedPieceIndex] = newPiece
 
-  let playerPieces:PlayerPieces = { 1: [], 2: []}
-
-  if (state.currentPlayer === 1) {
-    playerPieces = {
-      1: ownPieces,
-      2: state.playerPieces[state.opponentPlayer]
-    }
-  } else {
-    playerPieces = {
-      1: state.playerPieces[state.opponentPlayer],
-      2: ownPieces
-    }
-  }
+  const playerPieces = buildPlayerPieces(
+    state.currentPlayer,
+    ownPieces,
+    state.playerPieces[state.opponentPlayer]
+  )
 
   return {
     type: "MOVE_PIECE",
@@ -92,6 +97,24 @@ const finishTurn = (state: FieldState):FieldAction => {
       availablePlaces: null
     }
   }
+}
+
+const buildPlayerPieces = (currentPlayer: Player, ownPieces: PieceInfo[], opponentPieces: PieceInfo[]) => {
+  let playerPieces:PlayerPieces = { 1: [], 2: []}
+
+  if (currentPlayer === 1) {
+    playerPieces = {
+      1: ownPieces,
+      2: opponentPieces
+    }
+  } else {
+    playerPieces = {
+      1: opponentPieces,
+      2: ownPieces
+    }
+  }
+
+  return playerPieces
 }
 
 export {
