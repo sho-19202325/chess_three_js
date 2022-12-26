@@ -1,5 +1,6 @@
 import { PieceInfo, Place, Player } from "types/common"
 import { AvailablePlaceCalculatorForBishop } from "./AvailablePlaceCalculator/AvailablePlaceCalculatorForBishop"
+import { AvailablePlaceCalculatorForKing } from "./AvailablePlaceCalculator/AvailablePlaceCalculatorForKing"
 import { AvailablePlaceCalculatorForKnight } from "./AvailablePlaceCalculator/AvailablePlaceCalculatorForKnight"
 import { AvailablePlaceCalculatorForLuke } from "./AvailablePlaceCalculator/AvailablePlaceCalculatorForLuke"
 import { AvailablePlaceCalculatorForPawn } from "./AvailablePlaceCalculator/AvailablePlaceCalculatorForPawn"
@@ -17,7 +18,6 @@ export class AvailablePlaceCalculatorFactory {
     switch (piece.name) {
       case "Pawn":
         return new AvailablePlaceCalculatorForPawn(...argsOfAvailablePlacesCalculator)
-      // TODO: 他の駒のロジックも実装する
       case "Luke":
         return new AvailablePlaceCalculatorForLuke(...argsOfAvailablePlacesCalculator)
       case "Bishop":
@@ -26,6 +26,8 @@ export class AvailablePlaceCalculatorFactory {
         return new AvailablePlaceCalculatorForQueen(...argsOfAvailablePlacesCalculator)
       case "Knight":
         return new AvailablePlaceCalculatorForKnight(...argsOfAvailablePlacesCalculator)
+      case "King":
+        return new AvailablePlaceCalculatorForKing(...argsOfAvailablePlacesCalculator)
       default:
         throw new Error(`"${piece.name}"はAvailablePlaceCalculatorFactoryに登録されていません。`)
     }
