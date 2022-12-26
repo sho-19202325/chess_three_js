@@ -1,5 +1,6 @@
 import { PieceInfo, Place, Player } from "types/common"
 import { AvailablePlaceCalculatorForBishop } from "./AvailablePlaceCalculator/AvailablePlaceCalculatorForBishop"
+import { AvailablePlaceCalculatorForKnight } from "./AvailablePlaceCalculator/AvailablePlaceCalculatorForKnight"
 import { AvailablePlaceCalculatorForLuke } from "./AvailablePlaceCalculator/AvailablePlaceCalculatorForLuke"
 import { AvailablePlaceCalculatorForPawn } from "./AvailablePlaceCalculator/AvailablePlaceCalculatorForPawn"
 import { AvailablePlaceCalculatorForQueen } from "./AvailablePlaceCalculator/AvailablePlaceCalculatorForQueen"
@@ -23,6 +24,8 @@ export class AvailablePlaceCalculatorFactory {
         return new AvailablePlaceCalculatorForBishop(...argsOfAvailablePlacesCalculator)
       case "Queen":
         return new AvailablePlaceCalculatorForQueen(...argsOfAvailablePlacesCalculator)
+      case "Knight":
+        return new AvailablePlaceCalculatorForKnight(...argsOfAvailablePlacesCalculator)
       default:
         throw new Error(`"${piece.name}"はAvailablePlaceCalculatorFactoryに登録されていません。`)
     }
