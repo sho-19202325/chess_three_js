@@ -32,9 +32,18 @@ const selectPiece = (state: FieldState, selectedPiece: PieceInfo):FieldAction =>
 const selectSquare = (state: FieldState, targetPlace: Place):FieldAction => {
   if (state.phase !== "SELECT_SQUARE") throw Error(`Invalid Phase is specified: ${state.phase}, but expected SELECT_SQUARE`)
 
-  // とった駒を削除する
   let opponentPieces = state.playerPieces[state.opponentPlayer] 
-  opponentPieces = opponentPieces.filter(piece => !isSamePlace(targetPlace, piece.place))
+  let winner = null
+
+  const targetPiece = opponentPieces.find(piece => isSamePlace(targetPlace, piece.place))
+
+  if (targetPiece) {
+    // targetPlaceに置枯れている駒を削除する
+    opponentPieces = opponentPieces.filter(piece => JSON.stringify(piece) !== JSON.stringify(targetPiece))
+
+    // targetPieceが"King"であれば、currentPlayerをwinnerとする
+    if (targetPiece.name === "King") winner = state.currentPlayer
+  }
 
   const playerPieces = buildPlayerPieces(
     state.currentPlayer,
@@ -48,7 +57,8 @@ const selectSquare = (state: FieldState, targetPlace: Place):FieldAction => {
       ...state,
       phase: "MOVE_PIECE",
       targetPlace,
-      playerPieces
+      playerPieces,
+      winner
     }
   }
 }
@@ -88,6 +98,7 @@ const finishTurn = (state: FieldState):FieldAction => {
   return {
     type: "FINISH_TURN",
     payload: {
+      ...state,
       playerPieces: state.playerPieces,
       phase: "SELECT_PIECE",
       currentPlayer: nextPlayer,

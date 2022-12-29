@@ -56,7 +56,8 @@ const initialState:FieldState = {
     1: INITIAL_PICES_FOR_PLEYER_1,
     2: INITIAL_PICES_FOR_PLEYER_2
   },
-  availablePlaces: null
+  availablePlaces: null,
+  winner: null
 }
 
 export const FieldContext = createContext<FieldContextProps>({

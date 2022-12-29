@@ -15,6 +15,7 @@ type SelectPieceState = {
   targetPlace: null
   playerPieces: PlayerPieces
   availablePlaces: null
+  winner: Player | null
 }
 
 type SelectSquareState = {
@@ -25,6 +26,7 @@ type SelectSquareState = {
   targetPlace: null
   playerPieces: PlayerPieces
   availablePlaces: Place[]
+  winner: Player | null
 }
 
 type MoveOrFinishState = {
@@ -35,6 +37,7 @@ type MoveOrFinishState = {
   targetPlace: Place
   playerPieces: PlayerPieces
   availablePlaces: Place[]
+  winner: Player | null
 }
 
 type SelectPieceAction = {
@@ -62,5 +65,6 @@ type FieldAction = SelectPieceAction | SelectSquareAction | MoveAction | FinishT
 export type {
   FieldState,
   FieldAction,
-  PlayerPieces
+  PlayerPieces,
+  SelectPieceState
 }
