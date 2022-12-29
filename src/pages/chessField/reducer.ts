@@ -18,7 +18,8 @@ const reducer = (state: FieldState, action: FieldAction):FieldState => {
         ...state,
         phase: action.payload.phase,
         targetPlace: action.payload.targetPlace,
-        playerPieces: action.payload.playerPieces
+        playerPieces: action.payload.playerPieces,
+        winner: action.payload.winner
       }
     case "MOVE_PIECE":
       if (state.phase !== "MOVE_PIECE") return state
