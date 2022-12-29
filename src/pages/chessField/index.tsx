@@ -3,6 +3,7 @@ import { XyzSpace } from "types/common"
 import { ChessBoard } from "components/ChessBoard"
 import { PlayerPieces } from "components/PlayerPieces"
 import FieldContextProvider from "contexts/FieldContext"
+import { PlayerInfo } from "components/PlayerInfo"
 
 const CAMERA_PROPS = {
   fov: 60,
@@ -11,14 +12,15 @@ const CAMERA_PROPS = {
 
 export const ChessField = () => {
   return (
-    <Canvas camera={CAMERA_PROPS}>
-      <axesHelper scale={25} />
-      <ambientLight />
-      <FieldContextProvider>
-        <ChessBoard />
-        <PlayerPieces player={1} />
-        <PlayerPieces player={2} />
-      </FieldContextProvider>
-    </Canvas>
+    <FieldContextProvider>
+      <PlayerInfo />
+      <Canvas camera={CAMERA_PROPS}>
+        <axesHelper scale={25} />
+        <ambientLight />
+          <ChessBoard />
+          <PlayerPieces player={1} />
+          <PlayerPieces player={2} />
+      </Canvas>
+    </FieldContextProvider>
   )
 }
