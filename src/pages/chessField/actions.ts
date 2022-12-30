@@ -1,4 +1,4 @@
-import { PieceInfo, Place, Player } from "types/common";
+import { PieceInfo, Place, Player, PromotionPieceName } from "types/common";
 import { FieldAction, FieldState, PlayerPieces } from "types/fieldState";
 import { AvailablePlaceCalculatorFactory } from "models/AvailablePlaceCalculatorFactory";
 import { isSamePlace } from "utils/place";
@@ -66,10 +66,23 @@ const selectSquare = (state: FieldState, targetPlace: Place):FieldAction => {
 const movePiece = (state: FieldState):FieldAction => {
   if (state.phase !== "MOVE_PIECE") throw Error(`Invalid Phase is specified: ${state.phase}, but expected MOVE_PIECE`)
 
+  return {
+    type: "MOVE_PIECE",
+    payload: {
+      ...state,
+      phase: "FINISH_TURN"
+    }
+  }
+}
+
+const finishTurn = (state: FieldState, promotionPieceName?: PromotionPieceName):FieldAction => {
+  if (state.phase !== "FINISH_TURN") throw Error(`Invalid Phase is specified: ${state.phase}, but expected FINISH_TURN`)
+
   // 移動させたpieceをアップデートする
   const ownPieces = state.playerPieces[state.currentPlayer]
+  const newPieceName = promotionPieceName !== undefined ? promotionPieceName : state.selectedPiece.name
   const newPiece = {
-    name: state.selectedPiece.name,
+    name: newPieceName,
     place: state.targetPlace
   }
   const selectedPieceIndex = ownPieces.findIndex(piece => JSON.stringify(piece) === JSON.stringify(state.selectedPiece))
@@ -81,25 +94,12 @@ const movePiece = (state: FieldState):FieldAction => {
     state.playerPieces[state.opponentPlayer]
   )
 
-  return {
-    type: "MOVE_PIECE",
-    payload: {
-      ...state,
-      phase: "FINISH_TURN",
-      playerPieces
-    }
-  }
-}
-
-const finishTurn = (state: FieldState):FieldAction => {
-  if (state.phase !== "FINISH_TURN") throw Error(`Invalid Phase is specified: ${state.phase}, but expected FINISH_TURN`)
-
   const nextPlayer = state.currentPlayer === 1 ? 2 : 1
   return {
     type: "FINISH_TURN",
     payload: {
       ...state,
-      playerPieces: state.playerPieces,
+      playerPieces,
       phase: "SELECT_PIECE",
       currentPlayer: nextPlayer,
       opponentPlayer: state.currentPlayer,

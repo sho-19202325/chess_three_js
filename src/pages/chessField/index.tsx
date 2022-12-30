@@ -1,11 +1,13 @@
 import { Canvas } from "@react-three/fiber"
-import { XyzSpace } from "types/common"
+import { PromotionPieceName, XyzSpace } from "types/common"
 import { ChessBoard } from "components/ChessBoard"
 import { PlayerPieces } from "components/PlayerPieces"
 import { PlayerInfo } from "components/PlayerInfo"
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { FieldContext } from "contexts/FieldContext"
 import { finishTurn } from "./actions"
+import { PromotionModal } from "components/PromotionModal"
+import { PROMOTION_PLACE_Y_FOR_PLAYER_1, PROMOTION_PLACE_Y_FOR_PLAYER_2 } from "consts/chessBoard"
 
 const CAMERA_PROPS = {
   fov: 60,
@@ -14,18 +16,32 @@ const CAMERA_PROPS = {
 
 export const ChessField = () => {
   const { state, dispatch } = useContext(FieldContext)
+  const [ openPromotionModal, setOpenPromotionModal ] = useState<boolean>(false)
 
   useEffect(() => {
     if (state.phase !== "FINISH_TURN") return
-    if (state.winner === null) return dispatch(finishTurn(state))
 
-    // winnerが決定したら、確認ダイアログを出し、画面をリロードする。
-    if (window.confirm(`Player ${state.winner}の勝利です!\n最初からゲームを始めるにはOKボタンを押してください。`)) window.location.reload()
+    // 勝敗が決定しているかどうかの判定
+    if (state.winner !== null
+        && window.confirm(`Player ${state.winner}の勝利です!\n最初からゲームを始めるにはOKボタンを押してください。`)
+    ) return window.location.reload()
+
+    // promotionが必要かどうかの判定
+    const promotionPlaceY = state.currentPlayer === 1 ? PROMOTION_PLACE_Y_FOR_PLAYER_1 : PROMOTION_PLACE_Y_FOR_PLAYER_2
+    if (state.selectedPiece.name === "Pawn" && state.targetPlace[1] === promotionPlaceY) return setOpenPromotionModal(true)
+
+    dispatch(finishTurn(state))
   }, [state, dispatch])
+
+  const handlePromotion = (promotionPieceName: PromotionPieceName) => {
+    dispatch(finishTurn(state, promotionPieceName))
+    setOpenPromotionModal(false)
+  }
 
   return (
     <>
       <PlayerInfo />
+      <PromotionModal open={openPromotionModal} handlePromotion={handlePromotion} />
       <Canvas camera={CAMERA_PROPS}>
         <axesHelper scale={25} />
         <ambientLight />
