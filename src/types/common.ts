@@ -3,6 +3,7 @@ type XyzSpace = [number, number, number]
 type Place = [number, number]
 
 type PieceName = "Pawn" | "Luke" | "Bishop" | "Knight" | "Queen" | "King"
+type PromotionPieceName = Extract<PieceName, "Luke" | "Bishop" | "Knight" | "Queen">
 type PieceInfo = {
   name: PieceName,
   place: Place
@@ -15,6 +16,7 @@ export type {
   XyzSpace,
   Place,
   PieceName,
+  PromotionPieceName,
   PieceInfo,
   Player,
   Phase,
