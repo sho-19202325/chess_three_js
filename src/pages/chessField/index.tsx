@@ -8,6 +8,7 @@ import { FieldContext } from "contexts/FieldContext"
 import { finishTurn } from "./actions"
 import { PromotionModal } from "components/PromotionModal"
 import { PROMOTION_PLACE_Y_FOR_PLAYER_1, PROMOTION_PLACE_Y_FOR_PLAYER_2 } from "consts/chessBoard"
+import { WinnerModal } from "components/WinnerModal"
 
 const CAMERA_PROPS = {
   fov: 60,
@@ -17,14 +18,13 @@ const CAMERA_PROPS = {
 export const ChessField = () => {
   const { state, dispatch } = useContext(FieldContext)
   const [ openPromotionModal, setOpenPromotionModal ] = useState<boolean>(false)
+  const [ openWinnerModal, setOpenWinnerModal ] = useState<boolean>(false)
 
   useEffect(() => {
     if (state.phase !== "FINISH_TURN") return
 
     // 勝敗が決定しているかどうかの判定
-    if (state.winner !== null
-        && window.confirm(`Player ${state.winner}の勝利です!\n最初からゲームを始めるにはOKボタンを押してください。`)
-    ) return window.location.reload()
+    if (state.winner !== null) return setOpenWinnerModal(true)
 
     // promotionが必要かどうかの判定
     const promotionPlaceY = state.currentPlayer === 1 ? PROMOTION_PLACE_Y_FOR_PLAYER_1 : PROMOTION_PLACE_Y_FOR_PLAYER_2
@@ -38,10 +38,16 @@ export const ChessField = () => {
     setOpenPromotionModal(false)
   }
 
+  const handleCloseWinnerModal = () => {
+    setOpenWinnerModal(false)
+    window.location.reload()
+  }
+
   return (
     <>
       <PlayerInfo />
       <PromotionModal open={openPromotionModal} handlePromotion={handlePromotion} />
+      <WinnerModal open={openWinnerModal} handleCloseWinnerModal={handleCloseWinnerModal} />
       <Canvas camera={CAMERA_PROPS}>
         <axesHelper scale={25} />
         <ambientLight />
