@@ -21,8 +21,8 @@ const getAllPlaces = ():Place[] => {
 
   return allPlaces
 }
-
 const ALL_PLACES = getAllPlaces()
+
 const PROMOTION_PLACE_Y_FOR_PLAYER_1 = 8
 const PROMOTION_PLACE_Y_FOR_PLAYER_2 = 1
 
