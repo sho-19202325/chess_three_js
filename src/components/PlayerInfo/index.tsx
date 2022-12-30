@@ -1,8 +1,15 @@
+import { Typography } from "@mui/material"
 import { FieldContext } from "contexts/FieldContext"
 import { useContext } from "react"
 
 export const PlayerInfo = () => {
   const { state } = useContext(FieldContext)
 
-  return <h1 style={{ position: 'absolute', left: '3%' }}>Player { state.currentPlayer }のターンです</h1>
+  const style = {
+    position: 'absolute',
+    top: '2%',
+    left: '1%'
+  }
+
+  return <Typography sx={style} variant="h3" >Player { state.currentPlayer }のターン</Typography>
 }
