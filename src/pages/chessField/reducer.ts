@@ -3,7 +3,7 @@ import { FieldAction, FieldState } from "types/fieldState";
 const reducer = (state: FieldState, action: FieldAction):FieldState => {
   switch (action.type) {
     case "SELECT_PIECE":
-      if (state.phase !== "SELECT_PIECE" && state.phase !== "SELECT_SQUARE") return state
+      if (state.phase !== "SELECT_PIECE" && state.phase !== "SELECT_TARGET_PLACE") return state
       
       return {
         ...state,
@@ -11,8 +11,8 @@ const reducer = (state: FieldState, action: FieldAction):FieldState => {
         selectedPiece: action.payload.selectedPiece,
         availablePlaces: action.payload.availablePlaces
       }
-    case "SELECT_SQUARE":
-      if (state.phase !== "SELECT_SQUARE") return state
+    case "SELECT_TARGET_PLACE":
+      if (state.phase !== "SELECT_TARGET_PLACE") return state
 
       return {
         ...state,

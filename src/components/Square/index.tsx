@@ -1,7 +1,7 @@
 import { ThreeEvent, useFrame } from "@react-three/fiber"
 import { calculatePositionFromPlace } from "utils/place"
 import { FieldContext } from "contexts/FieldContext"
-import { selectSquare } from "pages/chessField/actions"
+import { selectTargetPlace } from "pages/chessField/actions"
 import { Suspense, useContext, useEffect, useRef } from "react"
 import { MeshStandardMaterial } from "three"
 import { Place } from "../../types/common"
@@ -35,10 +35,10 @@ export const Square = ({ place, isBlack, isActive }: SquareProps) => {
   }
 
   const handleClickActiveSqure = (e: ThreeEvent<PointerEvent>) => {
-    if (!isActive || state.phase !== "SELECT_SQUARE") return
+    if (!isActive || state.phase !== "SELECT_TARGET_PLACE") return
     e.stopPropagation()
 
-    dispatch(selectSquare(state, place))
+    dispatch(selectTargetPlace(state, place))
   }
 
   useEffect(() => {

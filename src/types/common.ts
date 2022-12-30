@@ -10,7 +10,7 @@ type PieceInfo = {
 }
 
 type Player = 1 | 2
-type Phase = "SELECT_PIECE" | "SELECT_SQUARE" | "MOVE_PIECE" | "FINISH_TURN"
+type Phase = "SELECT_PIECE" | "SELECT_TARGET_PLACE" | "MOVE_PIECE" | "FINISH_TURN"
 
 export type {
   XyzSpace,

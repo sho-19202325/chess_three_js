@@ -11,7 +11,7 @@ import { Knight } from "./Knight";
 import { Luke } from "./Luke";
 import { Pawn } from "./Pawn";
 import { Queen } from "./Queen";
-import { movePiece, selectPiece, selectSquare } from "pages/chessField/actions";
+import { movePiece, selectPiece, selectTargetPlace } from "pages/chessField/actions";
 
 type PieceProps = {
   piece: PieceInfo
@@ -35,12 +35,12 @@ export const Piece = ({ piece, player }:PieceProps) => {
   const handleClickPiece = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation()
 
-    // SELECT_PIECE, SELECT_SQUAREフェーズ中に自分のコマをクリックしていればselectPieceアクションを実行
-    if ((state.phase === "SELECT_PIECE" || state.phase === "SELECT_SQUARE") && state.currentPlayer === player) {
+    // SELECT_PIECE, SELECT_TARGET_PLACEフェーズ中に自分のコマをクリックしていればselectPieceアクションを実行
+    if ((state.phase === "SELECT_PIECE" || state.phase === "SELECT_TARGET_PLACE") && state.currentPlayer === player) {
       dispatch(selectPiece(state, piece))
-    // SELECT_SQUAREフェーズ中に移動できる範囲に置いてある敵のコマをクリックしていればselectSquareアクションを実行
-    } else if (state.phase === "SELECT_SQUARE" && isIncludeSamePlace(piece.place, state.availablePlaces)) {
-      dispatch(selectSquare(state, piece.place))
+    // SELECT_TARGET_PLACEフェーズ中に移動できる範囲に置いてある敵のコマをクリックしていればselectTargetPlaceアクションを実行
+    } else if (state.phase === "SELECT_TARGET_PLACE" && isIncludeSamePlace(piece.place, state.availablePlaces)) {
+      dispatch(selectTargetPlace(state, piece.place))
     }
   }
 

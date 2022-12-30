@@ -5,7 +5,7 @@ type PlayerPieces = {
   2: PieceInfo[]
 }
 
-type FieldState = SelectPieceState | SelectSquareState | MoveOrFinishState
+type FieldState = SelectPieceState | SelectTargetPlaceState | MoveOrFinishState
 
 type SelectPieceState = {
   phase:"SELECT_PIECE"
@@ -18,8 +18,8 @@ type SelectPieceState = {
   winner: Player | null
 }
 
-type SelectSquareState = {
-  phase: "SELECT_SQUARE"
+type SelectTargetPlaceState = {
+  phase: "SELECT_TARGET_PLACE"
   currentPlayer: Player
   opponentPlayer: Player
   selectedPiece: PieceInfo
@@ -42,11 +42,11 @@ type MoveOrFinishState = {
 
 type SelectPieceAction = {
   type: "SELECT_PIECE",
-  payload: SelectSquareState
+  payload: SelectTargetPlaceState
 }
 
-type SelectSquareAction = {
-  type: "SELECT_SQUARE",
+type SelectTargetPlaceAction = {
+  type: "SELECT_TARGET_PLACE",
   payload: MoveOrFinishState
 }
 
@@ -60,7 +60,7 @@ type FinishTurnAction = {
   payload: SelectPieceState
 }
 
-type FieldAction = SelectPieceAction | SelectSquareAction | MoveAction | FinishTurnAction
+type FieldAction = SelectPieceAction | SelectTargetPlaceAction | MoveAction | FinishTurnAction
 
 export type {
   FieldState,

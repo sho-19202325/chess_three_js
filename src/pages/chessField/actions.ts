@@ -4,7 +4,7 @@ import { AvailablePlaceCalculatorFactory } from "models/AvailablePlaceCalculator
 import { isSamePlace } from "utils/place";
 
 const selectPiece = (state: FieldState, selectedPiece: PieceInfo):FieldAction => {
-  if (state.phase !== "SELECT_PIECE" && state.phase !== "SELECT_SQUARE") throw Error(`Invalid Phase is specified: ${state.phase}, but expected SELECT_PIECE`)
+  if (state.phase !== "SELECT_PIECE" && state.phase !== "SELECT_TARGET_PLACE") throw Error(`Invalid Phase is specified: ${state.phase}, but expected SELECT_PIECE`)
 
   const ownPlaces = state.playerPieces[state.currentPlayer].map(piece => piece.place)
   const opponentPlaces = state.playerPieces[state.opponentPlayer].map(piece => piece.place)
@@ -22,15 +22,15 @@ const selectPiece = (state: FieldState, selectedPiece: PieceInfo):FieldAction =>
     type: "SELECT_PIECE",
     payload: {
       ...state,
-      phase: "SELECT_SQUARE",
+      phase: "SELECT_TARGET_PLACE",
       selectedPiece,
       availablePlaces
     }
   }
 }
 
-const selectSquare = (state: FieldState, targetPlace: Place):FieldAction => {
-  if (state.phase !== "SELECT_SQUARE") throw Error(`Invalid Phase is specified: ${state.phase}, but expected SELECT_SQUARE`)
+const selectTargetPlace = (state: FieldState, targetPlace: Place):FieldAction => {
+  if (state.phase !== "SELECT_TARGET_PLACE") throw Error(`Invalid Phase is specified: ${state.phase}, but expected SELECT_TARGET_PLACE`)
 
   let opponentPieces = state.playerPieces[state.opponentPlayer] 
   let winner = null
@@ -52,7 +52,7 @@ const selectSquare = (state: FieldState, targetPlace: Place):FieldAction => {
   )
 
   return {
-    type: "SELECT_SQUARE",
+    type: "SELECT_TARGET_PLACE",
     payload: {
       ...state,
       phase: "MOVE_PIECE",
@@ -130,7 +130,7 @@ const buildPlayerPieces = (currentPlayer: Player, ownPieces: PieceInfo[], oppone
 
 export {
   selectPiece,
-  selectSquare,
+  selectTargetPlace,
   movePiece,
   finishTurn
 }
