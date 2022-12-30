@@ -1,4 +1,4 @@
-import { Button, FormControlLabel, Radio, RadioGroup } from "@mui/material"
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material"
 import { BaseModal } from "components/BaseModal";
 import React, { useState } from "react";
 import { PromotionPieceName } from "types/common";

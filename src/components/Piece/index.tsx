@@ -1,5 +1,5 @@
 import { ThreeEvent, useFrame } from "@react-three/fiber";
-import { calculatePositionFromPlace } from "utils/place";
+import { calculatePositionFromPlace, isIncludeSamePlace } from "utils/place";
 import { FieldContext } from "contexts/FieldContext";
 import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { Group } from "three";
@@ -11,12 +11,11 @@ import { Knight } from "./Knight";
 import { Luke } from "./Luke";
 import { Pawn } from "./Pawn";
 import { Queen } from "./Queen";
-import { movePiece } from "pages/chessField/actions";
+import { movePiece, selectPiece, selectTargetPlace } from "pages/chessField/actions";
 
 type PieceProps = {
   piece: PieceInfo
   player: Player
-  handleSelectPiece: (piece: PieceInfo) => void
 }
 
 // 駒を移動させる速度
@@ -24,7 +23,7 @@ const MOVE_PER_FRAME = 0.1
 
 const PIECE_Z_POSITION = PIECE_HEIGHT / 2
 
-export const Piece = ({ piece, player, handleSelectPiece }:PieceProps) => {
+export const Piece = ({ piece, player }:PieceProps) => {
   const group = useRef<Group>(null)
   const position = calculatePositionFromPlace(piece.place)
   position[2] = PIECE_Z_POSITION
@@ -35,7 +34,14 @@ export const Piece = ({ piece, player, handleSelectPiece }:PieceProps) => {
 
   const handleClickPiece = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation()
-    handleSelectPiece(piece)
+
+    // SELECT_PIECE, SELECT_TARGET_PLACEフェーズ中に自分のコマをクリックしていればselectPieceアクションを実行
+    if ((state.phase === "SELECT_PIECE" || state.phase === "SELECT_TARGET_PLACE") && state.currentPlayer === player) {
+      dispatch(selectPiece(state, piece))
+    // SELECT_TARGET_PLACEフェーズ中に移動できる範囲に置いてある敵のコマをクリックしていればselectTargetPlaceアクションを実行
+    } else if (state.phase === "SELECT_TARGET_PLACE" && isIncludeSamePlace(piece.place, state.availablePlaces)) {
+      dispatch(selectTargetPlace(state, piece.place))
+    }
   }
 
   const renderPiece = () => {

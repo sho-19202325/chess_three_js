@@ -11,7 +11,7 @@ export const ChessBoard = () => {
 
     const squareIndex = (VIRTICAL_SQUARE_COUNT * (row - 1) + column)
     const isBlack = (column + row) % 2 !== 0
-    const isActive = state.phase === "SELECT_SQUARE" && isIncludeSamePlace(place, state.availablePlaces)
+    const isActive = state.phase === "SELECT_TARGET_PLACE" && isIncludeSamePlace(place, state.availablePlaces)
     return <Square key={squareIndex} place={place} isBlack={isBlack} isActive={isActive} />
   })
 
