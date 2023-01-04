@@ -2,6 +2,7 @@ import { Place, XyzSpace } from "types/common"
 
 const MAX_Z_POSITION = 10
 const PIECE_HEIGHT = 1
+const PIECE_Z_POSITION = PIECE_HEIGHT / 2
 const BOX_PIECE_ARGS = [0.5, 0.5, PIECE_HEIGHT] as XyzSpace
 const CYLINHDER_PIECE_ARGS = [0.3, 0.3, PIECE_HEIGHT, 32] as [number, number, number, number]
 const CYLINHDER_PIECE_ROTATION = [Math.PI / 2, 0, 0] as XyzSpace
@@ -21,14 +22,15 @@ const getAllPlaces = ():Place[] => {
 
   return allPlaces
 }
-
 const ALL_PLACES = getAllPlaces()
+
 const PROMOTION_PLACE_Y_FOR_PLAYER_1 = 8
 const PROMOTION_PLACE_Y_FOR_PLAYER_2 = 1
 
 export {
   MAX_Z_POSITION,
   PIECE_HEIGHT,
+  PIECE_Z_POSITION,
   BOX_PIECE_ARGS,
   CYLINHDER_PIECE_ARGS,
   CYLINHDER_PIECE_ROTATION,

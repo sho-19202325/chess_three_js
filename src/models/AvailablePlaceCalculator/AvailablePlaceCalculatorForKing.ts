@@ -1,5 +1,5 @@
 import { Place } from "types/common";
-import { isIncludeSamePlace } from "utils/place";
+import { isIncludeSamePlace, isValidPlace } from "utils/place";
 import { AvailablePlaceCalculator } from "models/AvailablePlaceCalculator";
 
 export class AvailablePlaceCalculatorForKing extends AvailablePlaceCalculator {
@@ -18,7 +18,7 @@ export class AvailablePlaceCalculatorForKing extends AvailablePlaceCalculator {
     ]
 
     movablePlaces.forEach(place => {
-      if (!isIncludeSamePlace(place, this.ownPlaces)) availablePlaces.push(place)
+      if (isValidPlace(place) && !isIncludeSamePlace(place, this.ownPlaces)) availablePlaces.push(place)
     })
 
     return availablePlaces
