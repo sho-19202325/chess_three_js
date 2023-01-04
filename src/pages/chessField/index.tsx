@@ -49,7 +49,6 @@ export const ChessField = () => {
       <PromotionModal open={openPromotionModal} handlePromotion={handlePromotion} />
       <WinnerModal open={openWinnerModal} handleCloseWinnerModal={handleCloseWinnerModal} />
       <Canvas camera={CAMERA_PROPS}>
-        <axesHelper scale={25} />
         <ambientLight />
           <ChessBoard />
           <PlayerPieces player={1} />
